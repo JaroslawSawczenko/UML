@@ -1,0 +1,60 @@
+@startuml diagram-aktywnosci
+' Diagram aktywnosci - dodawanie oceny i recenzji (z torami odpowiedzialnosci)
+skinparam dpi 110
+skinparam shadowing false
+
+|Użytkownik|
+start
+:Wybiera opcję "Dodaj recenzję";
+
+|Frontend (React.js)|
+if (Czy posiada token JWT?) then (nie)
+  :Wyświetl formularz logowania;
+  |Użytkownik|
+  :Podaje login i hasło;
+  |Frontend (React.js)|
+  :Wyślij dane do API i zapisz nowy token;
+else (tak)
+endif
+:Wyświetl formularz oceny i recenzji;
+
+|Użytkownik|
+:Wprowadza ocenę (1-10) oraz treść komentarza;
+:Klika "Zapisz";
+
+|Frontend (React.js)|
+if (Walidacja formularza ok?) then (nie)
+  :Wyświetl komunikat błędu\n(np. "Ocena poza zakresem");
+  stop
+else (tak)
+  :Wyślij żądanie POST do API\n(w nagłówku token JWT);
+endif
+
+|Backend API (FastAPI)|
+:Weryfikacja tokena JWT w Middleware;
+if (Token jest ważny?) then (nie)
+  :Zwróć błąd 401 Unauthorized;
+  |Frontend (React.js)|
+  :Wyloguj użytkownika i przekieruj do logowania;
+  stop
+else (tak)
+  |Backend API (FastAPI)|
+  :Przetwarzanie logiki biznesowej (SQLAlchemy);
+endif
+
+|Baza Danych (PostgreSQL)|
+:Zapisz rekord w tabeli Ratings;
+:Zapisz rekord w tabeli Reviews;
+:Zwróć potwierdzenie zapisu;
+
+|Backend API (FastAPI)|
+:Zwróć kod 201 Created;
+
+|Frontend (React.js)|
+:Zaktualizuj stan aplikacji\n(dodaj recenzję do listy);
+:Wyświetl "Pomyślnie dodano recenzję";
+
+|Użytkownik|
+:Widzi swoją nową recenzję na stronie filmu;
+stop
+@enduml

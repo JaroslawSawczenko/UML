@@ -1,0 +1,14 @@
+# Pliki robocze i archiwalne
+archiwum/
+
+# PlantUML
+plantuml.jar
+
+# System
+.DS_Store
+Thumbs.db
+
+# Edytory
+.vscode/
+.idea/
+*.swp

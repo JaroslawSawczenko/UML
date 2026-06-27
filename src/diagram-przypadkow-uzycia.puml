@@ -1,0 +1,45 @@
+@startuml diagram-przypadkow-uzycia
+' Diagram przypadkow uzycia - aplikacja Flicker
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+left to right direction
+
+actor "Gość\n(Niezalogowany)" as Gosc
+actor "Użytkownik\n(Zalogowany)" as Uzyt
+actor "Administrator" as Admin
+
+' Generalizacja aktorow: administrator jest uzytkownikiem, uzytkownik jest gosciem
+Admin --|> Uzyt
+Uzyt --|> Gosc
+
+rectangle "Aplikacja Webowa Flicker" {
+  usecase "Przeglądanie listy filmów" as UC1
+  usecase "Wyszukiwanie filmów po tytule" as UC2
+  usecase "Filtrowanie (gatunek, rok)" as UC3
+  usecase "Podgląd szczegółów i średniej oceny" as UC4
+  usecase "Przeglądanie recenzji" as UC5
+  usecase "Rejestracja i Logowanie" as UC6
+
+  usecase "Dodawanie oceny (1-10)" as UC7
+  usecase "Dodawanie recenzji" as UC8
+
+  usecase "Zarządzanie filmami\n(Dodawanie, Edycja, Usuwanie)" as UC9
+  usecase "Zarządzanie użytkownikami" as UC10
+  usecase "Zarządzanie recenzjami\n(Edycja, Usuwanie)" as UC11
+}
+
+Gosc -- UC1
+Gosc -- UC2
+Gosc -- UC3
+Gosc -- UC4
+Gosc -- UC5
+Gosc -- UC6
+
+Uzyt -- UC7
+Uzyt -- UC8
+
+Admin -- UC9
+Admin -- UC10
+Admin -- UC11
+@enduml

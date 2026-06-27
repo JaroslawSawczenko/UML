@@ -1,0 +1,48 @@
+@startuml diagram-komponentow
+' Diagram komponentow - warstwowa budowa systemu Flicker
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+skinparam componentStyle uml2
+
+package "Frontend (React.js / Next.js)" {
+  [Panel Administratora UI\n(Zarządzanie treścią)] as AdminUI
+  [Panel Użytkownika UI\n(Logowanie, Recenzje)] as UserUI
+  [Katalog Filmów UI\n(Wyszukiwanie, Filtrowanie)] as CatalogUI
+  [Klient HTTP\n(Axios)] as HttpClient
+
+  AdminUI ..> HttpClient : używa
+  UserUI ..> HttpClient : używa
+  CatalogUI ..> HttpClient : używa
+}
+
+interface "Żądania HTTP" as IHTTP
+HttpClient --( IHTTP
+
+package "Backend API (FastAPI)" {
+  interface "REST API\n(Endpointy JSON)" as IREST
+  [Moduł Autoryzacji\n(JWT Auth)] as AuthMod
+  [Moduł Zarządzania Filmami\n(CRUD)] as MovieMod
+  [Moduł Ocen i Recenzji] as ReviewMod
+  [Warstwa Dostępu do Danych\n(SQLAlchemy ORM)] as DAL
+
+  IREST -- AuthMod
+  IREST -- MovieMod
+  IREST -- ReviewMod
+
+  AuthMod ..> DAL : autoryzuje
+  MovieMod ..> DAL : zapis/odczyt
+  ReviewMod ..> DAL : zapis/odczyt
+}
+
+IHTTP )-- IREST
+
+interface "Połączenie SQL" as ISQL
+DAL --( ISQL
+
+package "Warstwa Danych" {
+  [Silnik Bazy Danych\n(PostgreSQL / MySQL)] as DBEngine
+}
+
+ISQL )-- DBEngine
+@enduml
