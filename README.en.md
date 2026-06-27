@@ -80,12 +80,15 @@ server together with the communication protocols.
 
 ## Generating the diagrams
 
-The diagrams are generated from the PlantUML sources in [src/](src/). To
-regenerate the images locally:
+The diagrams are generated from the PlantUML sources in [src/](src/).
+
+Requirements: Java (JRE) and `plantuml.jar` downloaded from
+[plantuml.com/download](https://plantuml.com/download) and placed in the
+repository root. Run the command from the repository root:
 
 ```bash
 java -jar plantuml.jar -tpng -o ../diagrams src/*.puml
 ```
 
-The `.puml` files can also be pasted directly into the online editor
-[plantuml.com](https://www.plantuml.com/plantuml).
+No installation needed: the `.puml` files can also be pasted directly into the
+online editor [plantuml.com](https://www.plantuml.com/plantuml).

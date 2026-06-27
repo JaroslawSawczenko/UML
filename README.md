@@ -77,12 +77,15 @@ serwer bazy danych wraz z protokołami komunikacji.
 
 ## Generowanie diagramów
 
-Diagramy są generowane ze źródeł PlantUML w katalogu [src/](src/). Aby
-zregenerować obrazy lokalnie:
+Diagramy są generowane ze źródeł PlantUML w katalogu [src/](src/).
+
+Wymagania: Java (JRE) oraz `plantuml.jar` pobrany ze strony
+[plantuml.com/download](https://plantuml.com/download) i umieszczony w katalogu
+głównym repozytorium. Polecenie uruchamiamy z katalogu głównego repozytorium:
 
 ```bash
 java -jar plantuml.jar -tpng -o ../diagrams src/*.puml
 ```
 
-Pliki `.puml` można też wkleić bezpośrednio do edytora online
+Bez instalacji: pliki `.puml` można też wkleić bezpośrednio do edytora online
 [plantuml.com](https://www.plantuml.com/plantuml).
