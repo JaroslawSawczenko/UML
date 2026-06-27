@@ -1,5 +1,7 @@
 # Flicker - projekt UML
 
+**Polski** | [English](README.en.md)
+
 Modelowanie aplikacji webowej do oceniania i recenzowania filmów (w stylu
 Filmweb / IMDb). Repozytorium zawiera komplet diagramów UML wraz z edytowalnymi
 źródłami PlantUML oraz dokumentację techniczną systemu.
@@ -62,9 +64,10 @@ serwer bazy danych wraz z protokołami komunikacji.
 
 ## Struktura repozytorium
 
-```
+```text
 .
-├── README.md                 # ten plik
+├── README.md                 # ten plik (wersja polska)
+├── README.en.md              # wersja angielska
 ├── diagrams/                 # wyrenderowane diagramy (PNG)
 ├── src/                      # edytowalne źródła PlantUML (.puml)
 └── docs/
