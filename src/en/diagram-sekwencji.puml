@@ -1,0 +1,34 @@
+@startuml diagram-sekwencji
+' Sequence diagram - adding a review by a logged-in user
+skinparam dpi 110
+skinparam shadowing false
+autonumber
+
+actor "User" as U
+participant "Frontend\n(React.js/Next.js)" as F
+participant "API Endpoint\n(FastAPI)" as API
+control "Auth Middleware\n(JWT)" as Auth
+participant "SQLAlchemy\nORM" as ORM
+database "Database\n(PostgreSQL/MySQL)" as DB
+
+U -> F : Types review content and clicks "Add"
+activate F
+F -> API : POST /api/reviews\n(Header: Bearer JWT, Body: content, movie_id)
+activate API
+API -> Auth : verify_token(JWT)
+activate Auth
+Auth --> API : token_ok (user_id)
+deactivate Auth
+API -> ORM : create_review(user_id, movie_id, content)
+activate ORM
+ORM -> DB : INSERT INTO Reviews (...)
+activate DB
+DB --> ORM : success
+deactivate DB
+ORM --> API : review_object
+deactivate ORM
+API --> F : 201 Created (JSON)
+deactivate API
+F --> U : Renders the new review in the list
+deactivate F
+@enduml

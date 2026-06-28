@@ -1,0 +1,25 @@
+@startuml diagram-stanow
+' Diagram stanow - cykl zycia recenzji
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+
+state "Robocza" as Robocza
+state "Opublikowana" as Opublikowana
+state "Ukryta" as Ukryta
+state "Usunięta" as Usunieta
+
+Opublikowana : widoczna dla użytkowników
+Opublikowana : wliczana do średniej oceny
+Ukryta : niewidoczna po zgłoszeniu/moderacji
+
+[*] --> Robocza : użytkownik tworzy recenzję
+Robocza --> Opublikowana : publikuje (walidacja ok)
+Robocza --> [*] : porzuca
+Opublikowana --> Opublikowana : edytuje treść
+Opublikowana --> Ukryta : zgłoszenie / moderacja (admin)
+Ukryta --> Opublikowana : przywrócenie (admin)
+Opublikowana --> Usunieta : usuwa (autor lub admin)
+Ukryta --> Usunieta : usuwa (admin)
+Usunieta --> [*]
+@enduml

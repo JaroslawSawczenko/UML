@@ -1,0 +1,45 @@
+@startuml diagram-przypadkow-uzycia
+' Use case diagram - Flicker application
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+left to right direction
+
+actor "Guest\n(Not logged in)" as Gosc
+actor "User\n(Logged in)" as Uzyt
+actor "Administrator" as Admin
+
+' Actor generalization: an administrator is a user, a user is a guest
+Admin --|> Uzyt
+Uzyt --|> Gosc
+
+rectangle "Flicker Web Application" {
+  usecase "Browse movie list" as UC1
+  usecase "Search movies by title" as UC2
+  usecase "Filter (genre, year)" as UC3
+  usecase "View details and average rating" as UC4
+  usecase "Browse reviews" as UC5
+  usecase "Registration and Login" as UC6
+
+  usecase "Add a rating (1-10)" as UC7
+  usecase "Add a review" as UC8
+
+  usecase "Movie management\n(Add, Edit, Delete)" as UC9
+  usecase "User management" as UC10
+  usecase "Review management\n(Edit, Delete)" as UC11
+}
+
+Gosc -- UC1
+Gosc -- UC2
+Gosc -- UC3
+Gosc -- UC4
+Gosc -- UC5
+Gosc -- UC6
+
+Uzyt -- UC7
+Uzyt -- UC8
+
+Admin -- UC9
+Admin -- UC10
+Admin -- UC11
+@enduml

@@ -1,0 +1,60 @@
+@startuml diagram-aktywnosci
+' Activity diagram - adding a rating and a review (with swimlanes)
+skinparam dpi 110
+skinparam shadowing false
+
+|User|
+start
+:Selects "Add review";
+
+|Frontend (React.js)|
+if (Has a JWT token?) then (no)
+  :Show login form;
+  |User|
+  :Enters login and password;
+  |Frontend (React.js)|
+  :Send credentials to API and store new token;
+else (yes)
+endif
+:Show rating and review form;
+
+|User|
+:Enters rating (1-10) and comment;
+:Clicks "Save";
+
+|Frontend (React.js)|
+if (Form validation ok?) then (no)
+  :Show error message\n(e.g. "Rating out of range");
+  stop
+else (yes)
+  :Send POST request to API\n(JWT token in header);
+endif
+
+|Backend API (FastAPI)|
+:Verify JWT token in Middleware;
+if (Token valid?) then (no)
+  :Return 401 Unauthorized;
+  |Frontend (React.js)|
+  :Log the user out and redirect to login;
+  stop
+else (yes)
+  |Backend API (FastAPI)|
+  :Process business logic (SQLAlchemy);
+endif
+
+|Database (PostgreSQL)|
+:Save record in Ratings table;
+:Save record in Reviews table;
+:Return write confirmation;
+
+|Backend API (FastAPI)|
+:Return 201 Created;
+
+|Frontend (React.js)|
+:Update application state\n(add review to the list);
+:Show "Review added successfully";
+
+|User|
+:Sees the new review on the movie page;
+stop
+@enduml

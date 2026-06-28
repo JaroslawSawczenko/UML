@@ -1,5 +1,7 @@
 # Flicker - dokumentacja projektu
 
+**Polski** | [English](documentation.md)
+
 Flicker to aplikacja webowa umożliwiająca przeglądanie informacji o filmach,
 ich ocenianie oraz dodawanie recenzji. Inspiracją są serwisy Filmweb oraz IMDb,
 które pozwalają użytkownikom oceniać i komentować produkcje filmowe.
@@ -35,11 +37,11 @@ które pozwalają użytkownikom oceniać i komentować produkcje filmowe.
 
 ## Technologie
 
-| Warstwa      | Stos technologiczny                  |
-| ------------ | ------------------------------------ |
-| Frontend     | React.js / Next.js, Axios, TailwindCSS |
-| Backend      | FastAPI, SQLAlchemy, JWT             |
-| Baza danych  | PostgreSQL / MySQL                   |
+| Warstwa     | Stos technologiczny                    |
+| ----------- | -------------------------------------- |
+| Frontend    | React.js / Next.js, Axios, TailwindCSS |
+| Backend     | FastAPI, SQLAlchemy, JWT               |
+| Baza danych | PostgreSQL / MySQL                     |
 
 ## Budowa systemu
 

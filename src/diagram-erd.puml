@@ -1,0 +1,47 @@
+@startuml diagram-erd
+' Diagram zwiazkow encji (ERD) - relacyjny model bazy danych Flicker
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+hide circle
+
+entity "Users" as users {
+  * id : Integer <<PK>>
+  --
+  * username : String
+  * email : String
+  * password_hash : String
+  * role : String
+}
+
+entity "Movies" as movies {
+  * id : Integer <<PK>>
+  --
+  * title : String
+  description : Text
+  release_year : Integer
+  genre : String
+}
+
+entity "Ratings" as ratings {
+  * id : Integer <<PK>>
+  --
+  * user_id : Integer <<FK>>
+  * movie_id : Integer <<FK>>
+  * rating : Integer
+}
+
+entity "Reviews" as reviews {
+  * id : Integer <<PK>>
+  --
+  * user_id : Integer <<FK>>
+  * movie_id : Integer <<FK>>
+  * content : Text
+  * created_at : DateTime
+}
+
+users ||--o{ ratings : "wystawia"
+users ||--o{ reviews : "pisze"
+movies ||--o{ ratings : "jest oceniany"
+movies ||--o{ reviews : "jest recenzowany"
+@enduml

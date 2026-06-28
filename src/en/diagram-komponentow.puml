@@ -1,0 +1,48 @@
+@startuml diagram-komponentow
+' Component diagram - layered structure of the Flicker system
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+skinparam componentStyle uml2
+
+package "Frontend (React.js / Next.js)" {
+  [Administrator UI\n(Content management)] as AdminUI
+  [User UI\n(Login, Reviews)] as UserUI
+  [Movie Catalog UI\n(Search, Filtering)] as CatalogUI
+  [HTTP Client\n(Axios)] as HttpClient
+
+  AdminUI ..> HttpClient : uses
+  UserUI ..> HttpClient : uses
+  CatalogUI ..> HttpClient : uses
+}
+
+interface "HTTP Requests" as IHTTP
+HttpClient --( IHTTP
+
+package "Backend API (FastAPI)" {
+  interface "REST API\n(JSON Endpoints)" as IREST
+  [Authorization Module\n(JWT Auth)] as AuthMod
+  [Movie Management Module\n(CRUD)] as MovieMod
+  [Ratings and Reviews Module] as ReviewMod
+  [Data Access Layer\n(SQLAlchemy ORM)] as DAL
+
+  IREST -- AuthMod
+  IREST -- MovieMod
+  IREST -- ReviewMod
+
+  AuthMod ..> DAL : authorizes
+  MovieMod ..> DAL : read/write
+  ReviewMod ..> DAL : read/write
+}
+
+IHTTP )-- IREST
+
+interface "SQL Connection" as ISQL
+DAL --( ISQL
+
+package "Data Layer" {
+  [Database Engine\n(PostgreSQL / MySQL)] as DBEngine
+}
+
+ISQL )-- DBEngine
+@enduml

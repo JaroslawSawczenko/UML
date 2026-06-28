@@ -18,12 +18,8 @@ Pełny opis znajduje się w [docs/dokumentacja.md](docs/dokumentacja.md).
 
 ## Diagramy UML
 
-### Diagram klas
-
-Model danych: encje `Users`, `Movies`, `Ratings`, `Reviews` wraz z atrybutami,
-metodami i licznościami relacji.
-
-![Diagram klas](diagrams/diagram-klas.png)
+Osiem diagramów obejmujących wymagania, strukturę, dane, dynamikę i architekturę
+systemu. Angielskie warianty znajdują się w [diagrams/en/](diagrams/en/).
 
 ### Diagram przypadków użycia
 
@@ -31,6 +27,27 @@ Funkcje systemu w podziale na aktorów. Zastosowano generalizację aktorów:
 administrator dziedziczy uprawnienia zalogowanego użytkownika, a ten - gościa.
 
 ![Diagram przypadków użycia](diagrams/diagram-przypadkow-uzycia.png)
+
+### Diagram klas
+
+Model obiektowy: encje `Users`, `Movies`, `Ratings`, `Reviews` wraz z atrybutami,
+metodami i licznościami relacji.
+
+![Diagram klas](diagrams/diagram-klas.png)
+
+### Diagram związków encji (ERD)
+
+Relacyjny model bazy danych w notacji kruczej stopki - klucze główne (PK), klucze
+obce (FK) oraz liczności powiązań między tabelami.
+
+![Diagram ERD](diagrams/diagram-erd.png)
+
+### Diagram stanów
+
+Cykl życia recenzji: od stanu roboczego, przez publikację i moderację, po
+usunięcie.
+
+![Diagram stanów](diagrams/diagram-stanow.png)
 
 ### Diagram aktywności
 
@@ -68,23 +85,36 @@ serwer bazy danych wraz z protokołami komunikacji.
 .
 ├── README.md                 # ten plik (wersja polska)
 ├── README.en.md              # wersja angielska
-├── diagrams/                 # wyrenderowane diagramy (PNG)
-├── src/                      # edytowalne źródła PlantUML (.puml)
-└── docs/
-    ├── dokumentacja.md       # dokumentacja techniczna
-    └── Flicker.docx          # oryginalny dokument
+├── LICENSE                   # licencja MIT
+├── render.sh                 # regeneracja wszystkich diagramów
+├── diagrams/                 # wyrenderowane diagramy PL (PNG)
+│   └── en/                   # warianty angielskie
+├── src/                      # edytowalne źródła PlantUML (PL)
+│   └── en/                   # źródła PlantUML (EN)
+├── docs/
+│   ├── dokumentacja.md       # dokumentacja techniczna (PL)
+│   ├── documentation.md      # dokumentacja techniczna (EN)
+│   └── Flicker.docx          # oryginalny dokument
+└── .github/workflows/        # CI: automatyczny render diagramów
 ```
 
 ## Generowanie diagramów
 
-Diagramy są generowane ze źródeł PlantUML w katalogu [src/](src/).
+Diagramy są generowane ze źródeł PlantUML w katalogach [src/](src/) oraz
+[src/en/](src/en/). Wymagania: Java (JRE) oraz `plantuml.jar` pobrany ze strony
+[plantuml.com/download](https://plantuml.com/download).
 
-Wymagania: Java (JRE) oraz `plantuml.jar` pobrany ze strony
-[plantuml.com/download](https://plantuml.com/download) i umieszczony w katalogu
-głównym repozytorium. Polecenie uruchamiamy z katalogu głównego repozytorium:
+Najprościej skryptem (regeneruje wersję polską i angielską):
 
 ```bash
-java -jar plantuml.jar -tpng -o ../diagrams src/*.puml
+./render.sh
+```
+
+Lub ręcznie, z katalogu głównego repozytorium:
+
+```bash
+java -jar plantuml.jar -tpng -o ../diagrams    src/*.puml
+java -jar plantuml.jar -tpng -o ../../diagrams/en src/en/*.puml
 ```
 
 Bez instalacji: pliki `.puml` można też wkleić bezpośrednio do edytora online

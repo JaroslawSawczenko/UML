@@ -1,0 +1,29 @@
+@startuml diagram-wdrozenia
+' Deployment diagram - runtime architecture of the Flicker system
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+
+node "User Device" <<Device>> {
+  node "Web Browser" <<Execution Environment>> {
+    artifact "SPA Application\n(React.js / Next.js, Axios, TailwindCSS)" as SPA
+  }
+}
+
+node "Backend Application Server" <<Server>> {
+  node "Python Environment" <<Execution Environment>> {
+    artifact "Flicker API\n(FastAPI, JWT)" as API
+    artifact "ORM\n(SQLAlchemy)" as ORM
+  }
+}
+
+node "Database Server" <<Server>> {
+  database "RDBMS (PostgreSQL / MySQL)" {
+    artifact "Flicker Database\n(Tables: Users, Movies, Ratings, Reviews)" as DBF
+  }
+}
+
+SPA --> API : <<protocol>>\nHTTP/REST (JSON)
+API ..> ORM : uses
+ORM --> DBF : <<protocol>>\nTCP/IP (SQL)
+@enduml

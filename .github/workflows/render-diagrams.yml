@@ -1,0 +1,48 @@
+name: Render diagrams
+
+# Regeneruje diagramy PNG ze zrodel PlantUML i commituje je z powrotem,
+# gdy zmieni sie ktorykolwiek plik .puml.
+on:
+  push:
+    paths:
+      - "src/**.puml"
+      - ".github/workflows/render-diagrams.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Graphviz
+        run: sudo apt-get update && sudo apt-get install -y graphviz
+
+      - name: Download PlantUML
+        run: curl -sSL -o plantuml.jar https://github.com/plantuml/plantuml/releases/download/v1.2024.8/plantuml-1.2024.8.jar
+
+      - name: Render diagrams
+        run: |
+          java -jar plantuml.jar -tpng -o "$PWD/diagrams" src/*.puml
+          java -jar plantuml.jar -tpng -o "$PWD/diagrams/en" src/en/*.puml
+
+      - name: Commit regenerated diagrams
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain diagrams)" ]; then
+            git add diagrams
+            git commit -m "chore: regenerate diagrams from sources"
+            git push
+          else
+            echo "Diagrams already up to date."
+          fi

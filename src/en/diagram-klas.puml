@@ -1,0 +1,49 @@
+@startuml diagram-klas
+' Class diagram - Flicker data model
+!pragma layout smetana
+skinparam dpi 110
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+hide circle
+
+class Users {
+  - id: Integer
+  - username: String
+  - email: String
+  - password_hash: String
+  - role: String
+  --
+  + add_review(movie_id, content): void
+  + add_rating(movie_id, rating): void
+}
+
+class Movies {
+  - id: Integer
+  - title: String
+  - description: Text
+  - release_year: Integer
+  - genre: String
+  --
+  + get_average_rating(): Float
+}
+
+class Ratings {
+  - id: Integer
+  - user_id: Integer
+  - movie_id: Integer
+  - rating: Integer
+}
+
+class Reviews {
+  - id: Integer
+  - user_id: Integer
+  - movie_id: Integer
+  - content: Text
+  - created_at: DateTime
+}
+
+Users "1" --> "0..*" Ratings : creates
+Users "1" --> "0..*" Reviews : writes
+Movies "1" --> "0..*" Ratings : has
+Movies "1" --> "0..*" Reviews : has
+@enduml

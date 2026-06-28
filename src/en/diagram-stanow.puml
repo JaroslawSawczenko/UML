@@ -1,0 +1,25 @@
+@startuml diagram-stanow
+' State diagram - review lifecycle
+!pragma layout smetana
+skinparam dpi 110
+skinparam shadowing false
+
+state "Draft" as Draft
+state "Published" as Published
+state "Hidden" as Hidden
+state "Deleted" as Deleted
+
+Published : visible to users
+Published : counted in average rating
+Hidden : not visible after report/moderation
+
+[*] --> Draft : user creates a review
+Draft --> Published : publishes (validation ok)
+Draft --> [*] : abandons
+Published --> Published : edits content
+Published --> Hidden : report / moderation (admin)
+Hidden --> Published : restore (admin)
+Published --> Deleted : delete (author or admin)
+Hidden --> Deleted : delete (admin)
+Deleted --> [*]
+@enduml
